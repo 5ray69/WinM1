@@ -16,14 +16,29 @@ class Create_combobox(System.Windows.Forms.Form):
     def __init__(self, owner, Offset_stoyak, Number_of_levels,
                 Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
                 Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json):
+        self.offset_stoyak = Offset_stoyak
+        self.number_of_levels = Number_of_levels
+
+        self.left_Point_ComboBox = Left_Point_ComboBox
+        self.height_Point_ComboBox = Height_Point_ComboBox
+        self.width_Size_ComboBox = Width_Size_ComboBox
+        self.height_Size_ComboBox = Height_Size_ComboBox
+
+        self.label_Offset = Label_Offset 
+        self.width_Size_Label = Width_Size_Label
+        self.height_Size_Label = Height_Size_Label
+        self.dict_from_json = Dict_from_json
+
+
+
         self.all_combobox = []
 
         for namber_int in range(1, Number_of_levels):
             owner.combbox = System.Windows.Forms.ComboBox()
             owner.combbox.Parent = self
             owner.combbox.Location = System.Drawing.Point(
-                Left_Point_ComboBox + Offset_stoyak, Height_Point_ComboBox + namber_int * 27)
-            owner.combbox.Size = System.Drawing.Size(Width_Size_ComboBox, Height_Size_ComboBox)
+                self.left_Point_ComboBox + self.offset_stoyak, self.height_Point_ComboBox + namber_int * 27)
+            owner.combbox.Size = System.Drawing.Size(self.width_Size_ComboBox, self.height_Size_ComboBox)
             owner.combbox.DropDownHeight = 250  # высота выпадающего списка из Combobox
             owner.combbox.ForeColor = System.Drawing.Color.FromName('Black')
             owner.combbox.FlatStyle = System.Windows.Forms.FlatStyle.Flat  # плоский стиль, не объемный
@@ -32,7 +47,7 @@ class Create_combobox(System.Windows.Forms.Form):
             owner.combbox.Name = 'L' + str(namber_int).rjust(2, "0") + '00'
             # добавляем строку в выпадающий список, указывая индекс,
             # под которым она должна находиться в списке
-            owner.combbox.Items.Insert(0, Dict_from_json['L' + str(namber_int).rjust(2, "0") + '00'])
+            owner.combbox.Items.Insert(0, self.dict_from_json['L' + str(namber_int).rjust(2, "0") + '00'])
             # указываем индекс, который будет выбран и помещен в combo box
             owner.combbox.SelectedIndex = 0
             owner.Controls.Add(owner.combbox)
@@ -41,7 +56,7 @@ class Create_combobox(System.Windows.Forms.Form):
             '''
             LOAD DROP DOWN LIST IN COMBO BOX
             '''
-            for int_namber in range(1, Number_of_levels):
+            for int_namber in range(1, self.number_of_levels):
                 owner.combbox.Items.Add('M' + str(int_namber))
 
             '''
@@ -51,7 +66,7 @@ class Create_combobox(System.Windows.Forms.Form):
             owner.label_to_combobox.Text = 'L' + str(namber_int).rjust(2, "0") + '00'
             owner.label_to_combobox.Font = System.Drawing.Font('Arial', System.Single(11))
             owner.label_to_combobox.Location = System.Drawing.Point(
-                Left_Point_ComboBox + Offset_stoyak - Label_Offset, Height_Point_ComboBox + 3 + namber_int * 27)
+                self.left_Point_ComboBox + self.offset_stoyak - self.label_Offset, self.height_Point_ComboBox + 3 + namber_int * 27)
             # PreferredWidth и PreferredHeight предпочтительная ширина и высота
-            owner.label_to_combobox.Size = System.Drawing.Size(Width_Size_Label, Height_Size_Label)
+            owner.label_to_combobox.Size = System.Drawing.Size(self.width_Size_Label, self.height_Size_Label)
             owner.Controls.Add(owner.label_to_combobox)
