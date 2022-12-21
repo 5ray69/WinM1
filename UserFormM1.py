@@ -13,13 +13,8 @@ import json
 from ColumnStoyak import Create_combobox
 from Draw import DrawBorder
 
-# комментарий
-# комментарий2
-# комментарий3
-# комментарий4
-# комментарий5
-# комментарий6
-# комментарий7
+# comment1
+
 
 '''
 DESERIALIZATION
