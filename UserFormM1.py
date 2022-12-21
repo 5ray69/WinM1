@@ -10,8 +10,8 @@ import System
 import System.Drawing
 import System.Windows.Forms
 import json
-from ColumnStoyak import Create_combobox
-from Draw import DrawBorder
+from ColumnStoyak import ColumnOneStoyak
+# from Draw import DrawBorder
 
 
 '''
@@ -43,7 +43,7 @@ Number_of_levels = 26
 
 # для основного стояка - значение 0, для других - смещение 
 # (заготовка на будущую работу, сейчас создаем только один стояк)
-Offset_stoyak1 = 0
+Offset_stoyak = 0
 Offset_stoyak2 = 250
 
 
@@ -56,9 +56,9 @@ class User_input_form(System.Windows.Forms.Form):
         self.MinimumSize = System.Drawing.Size(580, (870 + caption_height))  # минимальный размер формы
         self._combobox = []
         self._initialize_components()
-        self._draw = DrawBorder(self, Offset_stoyak1, Number_of_levels,
-                                Left_Point_ComboBox, Height_Point_ComboBox, Height_Size_ComboBox,
-                                Label_Offset, Height_Size_Label)
+        self._draw = ColumnOneStoyak(self, Offset_stoyak, Number_of_levels,
+                Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
+                Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json)
         self.Paint += System.Windows.Forms.PaintEventHandler(self._draw.drawBorders)  # рисование прямоугольника вокруг комбобоксов
 
         '''
@@ -146,7 +146,7 @@ class User_input_form(System.Windows.Forms.Form):
     DEFINE THE COMBO BOXS
     '''
     def _create_combobox(self):
-        create_combobox = Create_combobox(self, Offset_stoyak1, Number_of_levels,
+        create_combobox = ColumnOneStoyak(self, Offset_stoyak, Number_of_levels,
                             Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
                             Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json)
         self._combobox = create_combobox.all_combobox
