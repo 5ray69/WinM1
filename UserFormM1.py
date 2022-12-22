@@ -44,26 +44,29 @@ Number_of_levels = 26
 # для основного стояка - значение 0, для других - смещение 
 # (заготовка на будущую работу, сейчас создаем только один стояк)
 Offset_stoyak = 0
-Offset_stoyak2 = 250
+Offset_stoyak2 = 170
 
 
 class User_input_form(System.Windows.Forms.Form):
     def __init__(self):
-        self.Text = "Выберите какая магистраль квартир на каком этаже"  # текст
+        self.Text = "Выберите какая магистраль квартир на каком этаже"  # текст заголовка
         self.BackColor = System.Drawing.Color.FromArgb(238, 238, 238)  # цвет фона формы
         self.ClientSize = System.Drawing.Size(600, 900)  # размер формы в точках
         caption_height = System.Windows.Forms.SystemInformation.CaptionHeight  # создаем переменную высота заголовка
         self.MinimumSize = System.Drawing.Size(580, (870 + caption_height))  # минимальный размер формы
-        self.stoyak1 = ColumnOneStoyak(self, Offset_stoyak, Number_of_levels,
+
+        self.stoyak1 = ColumnOneStoyak(self, 'основной стояк', "1", Offset_stoyak, Number_of_levels,
                 Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
                 Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json)
-        self.Paint += System.Windows.Forms.PaintEventHandler(self.stoyak1.drawBorders)  # рисование прямоугольника вокруг комбобоксов
-
+        self.Paint += System.Windows.Forms.PaintEventHandler(self.stoyak1.drawBorders)
         self._combobox_stoyak1 = self.stoyak1.all_combobox
 
-        '''
-        DEFINE THE LOAD BUTTON
-        '''
+        self.stoyak2 = ColumnOneStoyak(self, 'второй стояк', "2", Offset_stoyak2, Number_of_levels,
+                Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
+                Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json)
+        self.Paint += System.Windows.Forms.PaintEventHandler(self.stoyak2.drawBorders)
+        self._combobox_stoyak2 = self.stoyak2.all_combobox
+
         self._defin_button = System.Windows.Forms.Button()
         self._defin_button.Location = System.Drawing.Point(30, 800)
         self._defin_button.Size = System.Drawing.Size(230, 54)
@@ -91,9 +94,7 @@ class User_input_form(System.Windows.Forms.Form):
         self._defin_button.Anchor = (
             System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
         self.Controls.Add(self._defin_button)
-        '''
-        DEFINE THE CANCEL BUTTON
-        '''
+
         self._cancel_button = System.Windows.Forms.Button()
         self._cancel_button.Location = System.Drawing.Point(340, 800)
         self._cancel_button.Size = System.Drawing.Size(230, 54)
@@ -109,7 +110,6 @@ class User_input_form(System.Windows.Forms.Form):
                             System.Drawing.FontStyle.Bold,
                             System.Drawing.GraphicsUnit.Point)
         self._cancel_button.Font = cancel_button_font
-
         # цвет шрифта текста на кнопке - белый
         self._cancel_button.ForeColor = System.Drawing.Color.FromName('White')
         # цвет самой кнопки, ее заливка. Если не указывать прозрачность,
@@ -119,31 +119,34 @@ class User_input_form(System.Windows.Forms.Form):
             System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)
         self.Controls.Add(self._cancel_button)
 
-        '''
-        BIND EVENTS TO CONTROL
-        '''
+        # BIND EVENTS TO CONTROL
         # Control.MouseEnter Событие, когда указатель мыши заходит в пределы элемента управления.
-        self._defin_button.MouseEnter += self.LoadFileButton_mouse_enter
+        self._defin_button.MouseEnter += self.define_button_mouse_enter
         # MouseLeave происходит, когда указатель мыши покидает элемент управления.
-        self._defin_button.MouseLeave += self.LoadFileButton_mouse_leave
+        self._defin_button.MouseLeave += self.define_button_mouse_leave
 
         # Control.MouseEnter Событие, когда указатель мыши заходит в пределы элемента управления.
-        self._cancel_button.MouseEnter += self.CloseFileButton_mouse_enter
+        self._cancel_button.MouseEnter += self.cancel_button_mouse_enter
         # MouseLeave происходит, когда указатель мыши покидает элемент управления.
-        self._cancel_button.MouseLeave += self.CloseFileButton_mouse_leave
+        self._cancel_button.MouseLeave += self.cancel_button_mouse_leave
 
         self._defin_button.Click += self._click_on_define_button
         self._cancel_button.Click += self._click_on_cancel_button
 
-    '''
-    DEFINE MOUSE CLICK
-    '''
     def _click_on_define_button(self, sender, args):
-        dict_user_select = {}
+        dict_general = {}
+        dict1_user_select = {}
         for comb_box in self._combobox_stoyak1:
             print(comb_box.Name)
             print(comb_box.SelectedItem)
-            dict_user_select[comb_box.Name] = comb_box.SelectedItem
+            dict1_user_select[comb_box.Name] = comb_box.SelectedItem
+        dict_general["1"] = dict1_user_select
+        dict2_user_select = {}
+        for comb_box in self._combobox_stoyak2:
+            print(comb_box.Name)
+            print(comb_box.SelectedItem)
+            dict2_user_select[comb_box.Name] = comb_box.SelectedItem
+        dict_general["2"] = dict2_user_select
 
         # '''
         # SERIALIZATION
@@ -169,22 +172,22 @@ class User_input_form(System.Windows.Forms.Form):
     DEFINE MOUSE ENTER EVENT
     '''
     # при наведении курсором мыши кнопка меняет цвет(событие - наведение курсором)
-    def LoadFileButton_mouse_enter(self, sender, args):
+    def define_button_mouse_enter(self, sender, args):
         self._defin_button.ForeColor = System.Drawing.Color.FromName('White')
         self._defin_button.BackColor = System.Drawing.Color.FromArgb((int(255 * .02)), 60, 90, 100)
 
         # возвращаем цвет кнопки, когда указатель мыши покидает пределы кнонки/элемента управления
-    def LoadFileButton_mouse_leave(self, sender, args):
+    def define_button_mouse_leave(self, sender, args):
         self._defin_button.ForeColor = System.Drawing.Color.FromName('White')
         self._defin_button.BackColor = System.Drawing.Color.FromArgb(255, 60, 90, 100)
 
         # меняем цвет кнопки, когда указатель мыши входит в пределы кнонки/элемента управления
-    def CloseFileButton_mouse_enter(self, sender, args):
+    def cancel_button_mouse_enter(self, sender, args):
         self._cancel_button.ForeColor = System.Drawing.Color.FromName('White')
         self._cancel_button.BackColor = System.Drawing.Color.FromArgb((int(255 * .02)), 60, 90, 100)
 
         # возвращаем цвет кнопки, когда указатель мыши покидает пределы кнонки/элемента управления
-    def CloseFileButton_mouse_leave(self, sender, args):
+    def cancel_button_mouse_leave(self, sender, args):
         self._cancel_button.ForeColor = System.Drawing.Color.FromName('White')
         self._cancel_button.BackColor = System.Drawing.Color.FromArgb(255, 60, 90, 100)
 

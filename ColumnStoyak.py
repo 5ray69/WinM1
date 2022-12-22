@@ -9,13 +9,11 @@ import System.Drawing
 import System.Windows.Forms
 
 
-'''
-DEFINE THE COMBO BOXS
-'''
 class ColumnOneStoyak(System.Windows.Forms.Form):
-    def __init__(self, owner, Offset_stoyak, Number_of_levels,
+    def __init__(self, owner, Name_stoyak, Number_stoyak, Offset_stoyak, Number_of_levels,
                 Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
                 Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json):
+        self.name_stoyak = Name_stoyak
         self.offset_stoyak = Offset_stoyak
         self.number_of_levels = Number_of_levels
 
@@ -45,35 +43,26 @@ class ColumnOneStoyak(System.Windows.Forms.Form):
             owner.combbox.Name = 'L' + str(namber_int).rjust(2, "0") + '00'
             # добавляем строку в выпадающий список, указывая индекс,
             # под которым она должна находиться в списке
-            owner.combbox.Items.Insert(0, self.dict_from_json['L' + str(namber_int).rjust(2, "0") + '00'])
+            owner.combbox.Items.Insert(0, self.dict_from_json[Number_stoyak]['L' + str(namber_int).rjust(2, "0") + '00'])
             # указываем индекс, который будет выбран и помещен в combo box
             owner.combbox.SelectedIndex = 0
             owner.Controls.Add(owner.combbox)
             self.all_combobox.append(owner.combbox)
 
-            '''
-            LOAD DROP DOWN LIST IN COMBO BOX
-            '''
+            # LOAD DROP DOWN LIST IN COMBO BOX
             for int_namber in range(1, self.number_of_levels):
                 owner.combbox.Items.Add('M' + str(int_namber))
 
-            '''
-            DEFIND LABEL TO COMBO BOX
-            '''
             owner.label_to_combobox = System.Windows.Forms.Label()
             owner.label_to_combobox.Text = 'L' + str(namber_int).rjust(2, "0") + '00'
             owner.label_to_combobox.Font = System.Drawing.Font('Arial', System.Single(11))
             owner.label_to_combobox.Location = System.Drawing.Point(
                 self.left_Point_ComboBox + self.offset_stoyak - self.label_Offset, self.height_Point_ComboBox + 3 + namber_int * 27)
-            # PreferredWidth и PreferredHeight предпочтительная ширина и высота
             owner.label_to_combobox.Size = System.Drawing.Size(self.width_Size_Label, self.height_Size_Label)
             owner.Controls.Add(owner.label_to_combobox)
 
-        '''
-        DEFIND LABEL NAME STOYAK
-        '''
         owner.label_chif_stoyak = System.Windows.Forms.Label()
-        owner.label_chif_stoyak.Text = 'основной стояк'
+        owner.label_chif_stoyak.Text = self.name_stoyak
         owner.label_chif_stoyak.Font = System.Drawing.Font(
             'Arial',
             System.Single(10.5),
@@ -87,9 +76,6 @@ class ColumnOneStoyak(System.Windows.Forms.Form):
         owner.Controls.Add(owner.label_chif_stoyak)
         self.label_chif_stoyak = owner.label_chif_stoyak
 
-    '''
-    DEFINE THE EVENT TO DRAW THE BORDER
-    '''
     # нужно получить ссылку на объект Graphics из PaintEventArgs в событии Paint
     def drawBorders(self, sender, args):
         X = self.left_Point_ComboBox  + self.offset_stoyak - self.label_Offset - 3
