@@ -134,26 +134,26 @@ class User_input_form(System.Windows.Forms.Form):
         self._cancel_button.Click += self._click_on_cancel_button
 
     def _click_on_define_button(self, sender, args):
-        dict_general = {}
+        dict_general_user_select = {}
         dict1_user_select = {}
         for comb_box in self._combobox_stoyak1:
             print(comb_box.Name)
             print(comb_box.SelectedItem)
             dict1_user_select[comb_box.Name] = comb_box.SelectedItem
-        dict_general["1"] = dict1_user_select
+        dict_general_user_select["1"] = dict1_user_select
         dict2_user_select = {}
         for comb_box in self._combobox_stoyak2:
             print(comb_box.Name)
             print(comb_box.SelectedItem)
             dict2_user_select[comb_box.Name] = comb_box.SelectedItem
-        dict_general["2"] = dict2_user_select
+        dict_general_user_select["2"] = dict2_user_select
 
-        # '''
-        # SERIALIZATION
-        # '''
-        # # создаем файл json, существующий с тем же именем перезапишется
-        # with open('drop_list.json', 'w') as file:
-        #     json.dump(dict_user_select, file, indent=4)
+        '''
+        SERIALIZATION
+        '''
+        # создаем файл json, существующий с тем же именем перезапишется
+        with open('drop_list.json', 'w') as file:
+            json.dump(dict_general_user_select, file, indent=4)
 
         # # FOR DYNAMO создаем файл json в текущей дирректории, существующий с тем же именем перезапишется
         # with open(IN[0].DirectoryName + r'\drop_list.json', 'w') as file:
