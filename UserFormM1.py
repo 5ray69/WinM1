@@ -54,12 +54,12 @@ class User_input_form(System.Windows.Forms.Form):
         self.ClientSize = System.Drawing.Size(600, 900)  # размер формы в точках
         caption_height = System.Windows.Forms.SystemInformation.CaptionHeight  # создаем переменную высота заголовка
         self.MinimumSize = System.Drawing.Size(580, (870 + caption_height))  # минимальный размер формы
-        self._combobox = []
-        self._initialize_components()
-        self._draw = ColumnOneStoyak(self, Offset_stoyak, Number_of_levels,
+        self.stoyak1 = ColumnOneStoyak(self, Offset_stoyak, Number_of_levels,
                 Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
                 Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json)
-        self.Paint += System.Windows.Forms.PaintEventHandler(self._draw.drawBorders)  # рисование прямоугольника вокруг комбобоксов
+        self.Paint += System.Windows.Forms.PaintEventHandler(self.stoyak1.drawBorders)  # рисование прямоугольника вокруг комбобоксов
+
+        self._combobox_stoyak1 = self.stoyak1.all_combobox
 
         '''
         DEFINE THE LOAD BUTTON
@@ -91,9 +91,6 @@ class User_input_form(System.Windows.Forms.Form):
         self._defin_button.Anchor = (
             System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
         self.Controls.Add(self._defin_button)
-# self.label.Anchor = ((WinForms.AnchorStyles)(
-#     ((WinForms.AnchorStyles.Top | WinForms.AnchorStyles.Bottom)
-#      | WinForms.AnchorStyles.Left)))
         '''
         DEFINE THE CANCEL BUTTON
         '''
@@ -107,11 +104,10 @@ class User_input_form(System.Windows.Forms.Form):
         self._cancel_button.Text = "Отмена"
         # шрифта текста на кнопке, Arial, жинрый и прочее
         cancel_button_font = System.Drawing.Font(
-            'Arial',
-            System.Single(12),
-            System.Drawing.FontStyle.Bold,
-            System.Drawing.GraphicsUnit.Point
-            )
+                            'Arial',
+                            System.Single(12),
+                            System.Drawing.FontStyle.Bold,
+                            System.Drawing.GraphicsUnit.Point)
         self._cancel_button.Font = cancel_button_font
 
         # цвет шрифта текста на кнопке - белый
@@ -139,25 +135,12 @@ class User_input_form(System.Windows.Forms.Form):
         self._defin_button.Click += self._click_on_define_button
         self._cancel_button.Click += self._click_on_cancel_button
 
-    def _initialize_components(self):
-        self._create_combobox()
-
-    '''
-    DEFINE THE COMBO BOXS
-    '''
-    def _create_combobox(self):
-        create_combobox = ColumnOneStoyak(self, Offset_stoyak, Number_of_levels,
-                            Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
-                            Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json)
-        self._combobox = create_combobox.all_combobox
-        return create_combobox
-
     '''
     DEFINE MOUSE CLICK
     '''
     def _click_on_define_button(self, sender, args):
         dict_user_select = {}
-        for comb_box in self._combobox:
+        for comb_box in self._combobox_stoyak1:
             print(comb_box.Name)
             print(comb_box.SelectedItem)
             dict_user_select[comb_box.Name] = comb_box.SelectedItem

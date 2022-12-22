@@ -81,7 +81,7 @@ class ColumnOneStoyak(System.Windows.Forms.Form):
             System.Drawing.GraphicsUnit.Point
             )
         owner.label_chif_stoyak.Location = System.Drawing.Point(
-            self.left_Point_ComboBox - self.label_Offset, self.height_Point_ComboBox)
+            self.left_Point_ComboBox + self.offset_stoyak - self.label_Offset, self.height_Point_ComboBox)
         owner.label_chif_stoyak.Size = System.Drawing.Size(
             owner.label_chif_stoyak.PreferredWidth, owner.label_chif_stoyak.PreferredHeight)
         owner.Controls.Add(owner.label_chif_stoyak)
@@ -92,7 +92,7 @@ class ColumnOneStoyak(System.Windows.Forms.Form):
     '''
     # нужно получить ссылку на объект Graphics из PaintEventArgs в событии Paint
     def drawBorders(self, sender, args):
-        X = self.left_Point_ComboBox - self.label_Offset - 3
+        X = self.left_Point_ComboBox  + self.offset_stoyak - self.label_Offset - 3
         Y = self.height_Point_ComboBox - 3
         W = self.height_Size_ComboBox + self.height_Size_Label + 1
         H = self.number_of_levels * 27 + 5
