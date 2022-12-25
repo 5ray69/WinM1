@@ -54,6 +54,7 @@ class User_input_form(System.Windows.Forms.Form):
         self.ClientSize = System.Drawing.Size(600, 900)  # размер формы в точках
         caption_height = System.Windows.Forms.SystemInformation.CaptionHeight  # создаем переменную высота заголовка
         self.MinimumSize = System.Drawing.Size(580, (870 + caption_height))  # минимальный размер формы
+        self.dict_user_select = {}
 
         self.stoyak1 = ColumnOneStoyak(self, 'основной стояк', "1", Offset_stoyak, Number_of_levels,
                 Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
@@ -147,10 +148,8 @@ class User_input_form(System.Windows.Forms.Form):
             print(comb_box.SelectedItem)
             dict2_user_select[comb_box.Name] = comb_box.SelectedItem
         dict_general_user_select["2"] = dict2_user_select
+        self.dict_user_select = dict_general_user_select
 
-        '''
-        SERIALIZATION
-        '''
         # создаем файл json, существующий с тем же именем перезапишется
         with open('drop_list.json', 'w') as file:
             json.dump(dict_general_user_select, file, indent=4)
