@@ -53,7 +53,7 @@ class User_input_form(System.Windows.Forms.Form):
         self.BackColor = System.Drawing.Color.FromArgb(238, 238, 238)  # цвет фона формы
         self.ClientSize = System.Drawing.Size(600, 900)  # размер формы в точках
         caption_height = System.Windows.Forms.SystemInformation.CaptionHeight  # создаем переменную высота заголовка
-        self.MinimumSize = System.Drawing.Size(580, (870 + caption_height))  # минимальный размер формы
+        self.MinimumSize = System.Drawing.Size(600, (900 + caption_height))  # минимальный размер формы
         self.dict_user_select = {}
 
         self.stoyak1 = ColumnOneStoyak(self, 'основной стояк', "1", Offset_stoyak, Number_of_levels,
@@ -68,8 +68,56 @@ class User_input_form(System.Windows.Forms.Form):
         self.Paint += System.Windows.Forms.PaintEventHandler(self.stoyak2.drawBorders)
         self._combobox_stoyak2 = self.stoyak2.all_combobox
 
+        self.label_number_panel = System.Windows.Forms.Label()
+        self.label_number_panel.Text = 'все номера коробок ЩК, которые <= N относятся К ПЕРВОЙ ЧАСТИ\
+            \nЗДАНИЯ, основному стояку, остальные к второму.\
+            \nЕсли в здании один стояк, назначьте N > количества ЩК на одном этаже'
+        self.label_number_panel.Font = System.Drawing.Font(
+            'Arial',
+            System.Single(10.5),
+            System.Drawing.FontStyle.Italic,
+            System.Drawing.GraphicsUnit.Point
+            )
+        self.label_number_panel.Location = System.Drawing.Point(30, 750)
+        self.label_number_panel.Size = System.Drawing.Size(
+            self.label_number_panel.PreferredWidth, self.label_number_panel.PreferredHeight)
+        self.Controls.Add(self.label_number_panel)
+        self.label_number_panel = self.label_number_panel
+
+        self.combbox_number = System.Windows.Forms.ComboBox()
+        self.combbox_number.Parent = self
+        self.combbox_number.Location = System.Drawing.Point(300, 730)
+        self.combbox_number.Size = System.Drawing.Size(Width_Size_ComboBox - 35, Height_Size_ComboBox)
+        self.combbox_number.DropDownHeight = 250  # высота выпадающего списка из Combobox
+        self.combbox_number.ForeColor = System.Drawing.Color.FromName('Black')
+        self.combbox_number.FlatStyle = System.Windows.Forms.FlatStyle.Flat  # плоский стиль, не объемный
+        self.combbox_number.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList  # DropDownList - пользователь не может ввести новое значение
+        self.combbox_number.Font = System.Drawing.Font('Arial', System.Single(10.5))
+        self.combbox_number.Name = 'Number panel'
+        # добавляем строку в выпадающий список, указывая индекс,
+        # под которым она должна находиться в списке
+        self.combbox_number.Items.Insert(0, Dict_from_json['0'])
+        # указываем индекс, который будет выбран и помещен в combo box
+        self.combbox_number.SelectedIndex = 0
+        self.Controls.Add(self.combbox_number)
+
+        # LOAD DROP DOWN LIST IN combbox_number
+        for int_number in range(1, 30):
+                self.combbox_number.Items.Add(str(int_number))
+
+        self.label_to_combobox_number = System.Windows.Forms.Label()
+        self.label_to_combobox_number.Text = 'назначьте N:'
+        self.label_to_combobox_number.Font = System.Drawing.Font(
+            'Arial', System.Single(11), System.Drawing.FontStyle.Bold)
+        self.label_to_combobox_number.Location = System.Drawing.Point(
+            self.combbox_number.Location.X - 100, self.combbox_number.Location.Y + 2)
+        self.label_to_combobox_number.Size = System.Drawing.Size(
+            self.label_to_combobox_number.PreferredWidth, self.label_to_combobox_number.PreferredHeight)
+        self.Controls.Add(self.label_to_combobox_number)
+
+
         self._defin_button = System.Windows.Forms.Button()
-        self._defin_button.Location = System.Drawing.Point(30, 800)
+        self._defin_button.Location = System.Drawing.Point(30, 830)
         self._defin_button.Size = System.Drawing.Size(230, 54)
         # define the Style of our button (FlatStyle - плоский стиль)
         self._defin_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -97,7 +145,7 @@ class User_input_form(System.Windows.Forms.Form):
         self.Controls.Add(self._defin_button)
 
         self._cancel_button = System.Windows.Forms.Button()
-        self._cancel_button.Location = System.Drawing.Point(340, 800)
+        self._cancel_button.Location = System.Drawing.Point(340, 830)
         self._cancel_button.Size = System.Drawing.Size(230, 54)
         # define the Style of our button (FlatStyle - плоский стиль)
         self._cancel_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -148,6 +196,9 @@ class User_input_form(System.Windows.Forms.Form):
             print(comb_box.SelectedItem)
             dict2_user_select[comb_box.Name] = comb_box.SelectedItem
         dict_general_user_select["2"] = dict2_user_select
+        print(self.combbox_number.Name)
+        print(self.combbox_number.SelectedItem)
+        dict_general_user_select["0"] = self.combbox_number.SelectedItem
         self.dict_user_select = dict_general_user_select
 
         # создаем файл json, существующий с тем же именем перезапишется
