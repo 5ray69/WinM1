@@ -55,6 +55,7 @@ class User_input_form(System.Windows.Forms.Form):
         caption_height = System.Windows.Forms.SystemInformation.CaptionHeight  # создаем переменную высота заголовка
         self.MinimumSize = System.Drawing.Size(600, (900 + caption_height))  # минимальный размер формы
         self.dict_user_select = {}
+        self.number_panels = ''
 
         self.stoyak1 = ColumnOneStoyak(self, 'основной стояк', "1", Offset_stoyak, Number_of_levels,
                 Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
@@ -68,21 +69,21 @@ class User_input_form(System.Windows.Forms.Form):
         self.Paint += System.Windows.Forms.PaintEventHandler(self.stoyak2.drawBorders)
         self._combobox_stoyak2 = self.stoyak2.all_combobox
 
-        self.label_number_panel = System.Windows.Forms.Label()
-        self.label_number_panel.Text = 'все номера коробок ЩК, которые <= N относятся К ПЕРВОЙ ЧАСТИ\
+        self.label_number_panels = System.Windows.Forms.Label()
+        self.label_number_panels.Text = 'все номера коробок ЩК, которые <= N относятся К ПЕРВОЙ ЧАСТИ\
             \nЗДАНИЯ, основному стояку, остальные к второму.\
             \nЕсли в здании один стояк, назначьте N > количества ЩК на одном этаже'
-        self.label_number_panel.Font = System.Drawing.Font(
+        self.label_number_panels.Font = System.Drawing.Font(
             'Arial',
             System.Single(10.5),
             System.Drawing.FontStyle.Italic,
             System.Drawing.GraphicsUnit.Point
             )
-        self.label_number_panel.Location = System.Drawing.Point(30, 750)
-        self.label_number_panel.Size = System.Drawing.Size(
-            self.label_number_panel.PreferredWidth, self.label_number_panel.PreferredHeight)
-        self.Controls.Add(self.label_number_panel)
-        self.label_number_panel = self.label_number_panel
+        self.label_number_panels.Location = System.Drawing.Point(30, 750)
+        self.label_number_panels.Size = System.Drawing.Size(
+            self.label_number_panels.PreferredWidth, self.label_number_panels.PreferredHeight)
+        self.Controls.Add(self.label_number_panels)
+        self.label_number_panels = self.label_number_panels
 
         self.combbox_number = System.Windows.Forms.ComboBox()
         self.combbox_number.Parent = self
@@ -93,7 +94,7 @@ class User_input_form(System.Windows.Forms.Form):
         self.combbox_number.FlatStyle = System.Windows.Forms.FlatStyle.Flat  # плоский стиль, не объемный
         self.combbox_number.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList  # DropDownList - пользователь не может ввести новое значение
         self.combbox_number.Font = System.Drawing.Font('Arial', System.Single(10.5))
-        self.combbox_number.Name = 'Number panel'
+        self.combbox_number.Name = 'Number panels'
         # добавляем строку в выпадающий список, указывая индекс,
         # под которым она должна находиться в списке
         self.combbox_number.Items.Insert(0, Dict_from_json['0'])
@@ -199,6 +200,7 @@ class User_input_form(System.Windows.Forms.Form):
         print(self.combbox_number.Name)
         print(self.combbox_number.SelectedItem)
         dict_general_user_select["0"] = self.combbox_number.SelectedItem
+        self.number_panels = self.combbox_number.SelectedItem
         self.dict_user_select = dict_general_user_select
 
         # создаем файл json, существующий с тем же именем перезапишется

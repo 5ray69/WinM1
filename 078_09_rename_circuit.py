@@ -1,27 +1,20 @@
 # -*- coding: utf-8 -*
-# # читаем файл
-# with open('drop_list.json', 'r') as file:
-#     Dict_from_json = json.load(file)
-
-# from UserFormM1 import User_input_form, main_user_from
-# main_user_from()
 from UserFormM1 import User_input_form
 
 user_form = User_input_form()
 user_form.ShowDialog()
 di = user_form.dict_user_select
-# for item in di.items():
-#     print(item)
+# словарь основного стояка
 dict_1 = user_form.dict_user_select["1"]
+# словарь второго стояка
 dict_2 = user_form.dict_user_select["2"]
-# dict_2
-# for item in dict_1.items():
-#     print(item)
-print(dict_1)
 
-# все номера панелей, которые <= 7 относятся К ПЕРВОЙ ЧАСТИ ЗДАНИЯ и для них словарь dict_1
+# все номера панелей, которые <= Npanels относятся К ПЕРВОЙ ЧАСТИ ЗДАНИЯ и для них словарь dict_1
 # если в здании только один стояк щитов ШЭ (одна часть здания), то просто увеличь это число,
 # чтоб из второго словаря не брались значения
+Npanels = user_form.number_panels
+OUT = [dict_1, dict_2, Npanels]
+
 
 
 
@@ -142,10 +135,10 @@ print(dict_1)
 #                 'M' in old_name and 'Щ' not in old_name,
 #                 'М' in old_name and 'Щ' not in old_name
 #                 ]):
-#                     # все номера панелей, которые <= 7 относятся К ПЕРВОЙ ЧАСТИ ЗДАНИЯ и для них словарь dict_1
+#                     # все номера панелей, которые <= Npanels относятся К ПЕРВОЙ ЧАСТИ ЗДАНИЯ и для них словарь dict_1
 #                     # если в здании только один стояк щитов ШЭ (одна часть здания), то просто увеличь это число,
 #                     # чтоб из второго словаря не брались значения
-#                     if int(old_name[old_name.rfind('/') + 1:]) <= 7:
+#                     if int(old_name[old_name.rfind('/') + 1:]) <= Npanels:
 #                         # old_name[old_name.rfind('/'):] - взяли все что после символа '/'
 #                         # curent_level[1:3] - взяли две цифры этажа из имени уровня
 #                         # dict_1[curent_level] - взяли значение магистрали соответсвующее этажу из словаря
