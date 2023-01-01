@@ -21,9 +21,7 @@ class DrawBorder(System.Windows.Forms.Form):
         self.number_of_levels = Number_of_levels
         self.offset_stoyak = Offset_stoyak
 
-        '''
-        DEFIND LABEL NAME STOYAK
-        '''
+        # DEFIND LABEL NAME STOYAK
         owner.label_chif_stoyak = System.Windows.Forms.Label()
         owner.label_chif_stoyak.Text = 'основной стояк'
         owner.label_chif_stoyak.Font = System.Drawing.Font(
@@ -39,9 +37,7 @@ class DrawBorder(System.Windows.Forms.Form):
         owner.Controls.Add(owner.label_chif_stoyak)
         self.label_chif_stoyak = owner.label_chif_stoyak
 
-    '''
-    DEFINE THE EVENT TO DRAW THE BORDER
-    '''
+    # DEFINE THE EVENT TO DRAW THE BORDER
     # нужно получить ссылку на объект Graphics из PaintEventArgs в событии Paint
     def drawBorders(self, sender, args):
         X = self.left_Point_ComboBox - self.label_Offset - 3

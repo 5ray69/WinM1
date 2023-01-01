@@ -6,12 +6,10 @@ clr.AddReference('System.Drawing')
 clr.AddReference('System.Windows.Forms')
 
 import System
-# import System.IO
 import System.Drawing
 import System.Windows.Forms
 import json
 from ColumnStoyak import ColumnOneStoyak
-# from Draw import DrawBorder
 
 
 '''
@@ -25,9 +23,7 @@ with open('drop_list.json', 'r') as file:
 # with open(IN[0].DirectoryName + r'\drop_list.json', 'r') as file:
 #     dict_from_json = json.load(file)
 
-'''
-VARIABLE FOR DIMENSIONS POINT LOCATIONS AND SIZES
-'''
+# VARIABLE FOR DIMENSIONS POINT LOCATIONS AND SIZES
 Left_Point_ComboBox = 100
 Height_Point_ComboBox = 10
 
@@ -213,16 +209,12 @@ class User_input_form(System.Windows.Forms.Form):
         
         self.Close()
 
-    '''
-    CANCEL MOUSE CLICK
-    '''
+    # CANCEL MOUSE CLICK
     def _click_on_cancel_button(self, sender, args):
         # Ошибка возникает, когда мы пытаемся закрыть форму в конструкторе или в событии Load
         self.Close()
 
-    '''
-    DEFINE MOUSE ENTER EVENT
-    '''
+    # DEFINE MOUSE ENTER EVENT
     # при наведении курсором мыши кнопка меняет цвет(событие - наведение курсором)
     def define_button_mouse_enter(self, sender, args):
         self._defin_button.ForeColor = System.Drawing.Color.FromName('White')
