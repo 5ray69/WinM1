@@ -1,27 +1,11 @@
 # -*- coding: utf-8 -*-
-
 import clr
-# clr.AddReference('System.IO')
 clr.AddReference('System.Drawing')
 clr.AddReference('System.Windows.Forms')
 
-import System
 import System.Drawing
 import System.Windows.Forms
-import json
 from ColumnStoyak import ColumnOneStoyak
-
-
-'''
-DESERIALIZATION
-'''
-# читаем файл
-with open('drop_list.json', 'r') as file:
-    Dict_from_json = json.load(file)
-
-# # FOR DYNAMO читаем файл из текущей дирректории
-# with open(IN[0].DirectoryName + r'\drop_list.json', 'r') as file:
-#     dict_from_json = json.load(file)
 
 # VARIABLE FOR DIMENSIONS POINT LOCATIONS AND SIZES
 Left_Point_ComboBox = 100
@@ -39,12 +23,12 @@ Number_of_levels = 26
 
 # для основного стояка - значение 0, для других - смещение 
 # (заготовка на будущую работу, сейчас создаем только один стояк)
-Offset_stoyak = 0
+Offset_stoyak1 = 0
 Offset_stoyak2 = 170
 
 
 class User_input_form(System.Windows.Forms.Form):
-    def __init__(self):
+    def __init__(self, Dict_from_json):
         self.Text = "Выберите какая магистраль квартир на каком этаже"  # текст заголовка
         self.BackColor = System.Drawing.Color.FromArgb(238, 238, 238)  # цвет фона формы
         self.ClientSize = System.Drawing.Size(600, 900)  # размер формы в точках
@@ -53,7 +37,7 @@ class User_input_form(System.Windows.Forms.Form):
         self.dict_user_select = {}
         self.number_panels = ''
 
-        self.stoyak1 = ColumnOneStoyak(self, 'основной стояк', "1", Offset_stoyak, Number_of_levels,
+        self.stoyak1 = ColumnOneStoyak(self, 'основной стояк', "1", Offset_stoyak1, Number_of_levels,
                 Left_Point_ComboBox, Height_Point_ComboBox, Width_Size_ComboBox, Height_Size_ComboBox,
                 Label_Offset, Width_Size_Label, Height_Size_Label, Dict_from_json)
         self.Paint += System.Windows.Forms.PaintEventHandler(self.stoyak1.drawBorders)
@@ -112,7 +96,6 @@ class User_input_form(System.Windows.Forms.Form):
             self.label_to_combobox_number.PreferredWidth, self.label_to_combobox_number.PreferredHeight)
         self.Controls.Add(self.label_to_combobox_number)
 
-
         self._defin_button = System.Windows.Forms.Button()
         self._defin_button.Location = System.Drawing.Point(30, 830)
         self._defin_button.Size = System.Drawing.Size(230, 54)
@@ -166,14 +149,12 @@ class User_input_form(System.Windows.Forms.Form):
         self.Controls.Add(self._cancel_button)
 
         # BIND EVENTS TO CONTROL
-        # Control.MouseEnter Событие, когда указатель мыши заходит в пределы элемента управления.
+        # Control.MouseEnter Событие, когда указатель мыши заходит в пределы элемента управления
+        # MouseLeave происходит, когда указатель мыши покидает элемент управления
         self._defin_button.MouseEnter += self.define_button_mouse_enter
-        # MouseLeave происходит, когда указатель мыши покидает элемент управления.
         self._defin_button.MouseLeave += self.define_button_mouse_leave
 
-        # Control.MouseEnter Событие, когда указатель мыши заходит в пределы элемента управления.
         self._cancel_button.MouseEnter += self.cancel_button_mouse_enter
-        # MouseLeave происходит, когда указатель мыши покидает элемент управления.
         self._cancel_button.MouseLeave += self.cancel_button_mouse_leave
 
         self._defin_button.Click += self._click_on_define_button
@@ -199,13 +180,6 @@ class User_input_form(System.Windows.Forms.Form):
         self.number_panels = self.combbox_number.SelectedItem
         self.dict_user_select = dict_general_user_select
 
-        # создаем файл json, существующий с тем же именем перезапишется
-        with open('drop_list.json', 'w') as file:
-            json.dump(dict_general_user_select, file, indent=4)
-
-        # # FOR DYNAMO создаем файл json в текущей дирректории, существующий с тем же именем перезапишется
-        # with open(IN[0].DirectoryName + r'\drop_list.json', 'w') as file:
-        #     json.dump(dict_user_select, file, indent=4)
         
         self.Close()
 
@@ -240,8 +214,8 @@ def main_user_from():
     win_form_app = System.Windows.Forms.Application
     win_form_app.Run(user_form)  # запуск формы
 
-if __name__ == '__main__':
-    main_user_from()
+# if __name__ == '__main__':
+#     main_user_from()
 
 # if __name__ == "__main__":
 #     inst = User_input_form()
